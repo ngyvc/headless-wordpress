@@ -7,7 +7,8 @@
     <title>Headless wordpress demo</title>
     <style>
       #headless-pages,
-      #headless-posts {
+      #headless-posts,
+      #single-page-content {
         border-top: 5em solid black;
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -30,8 +31,10 @@
     <main id="headless">
       <section id="headless-pages"></section>
       <section id="headless-posts"></section>
+      <section id="single-page-content"></section>
     </main>
     <script>
+      // listing many pages
       fetch(
         "https://ngy.micromedia.vanier.college/headless1/wp-json/wp/v2/pages"
       )
@@ -44,6 +47,7 @@
             `;
           }
         });
+      // listing many posts
       fetch(
         "https://ngy.micromedia.vanier.college/headless1/wp-json/wp/v2/posts"
       )
@@ -56,6 +60,19 @@
             `;
           }
         });
+      // single page ONLY
+      fetch(
+        "https://ngy.micromedia.vanier.college/headless1/wp-json/wp/v2/pages/16"
+      )
+        .then((result) => result.json())
+        .then((data) => {
+          document.querySelector("#single-page-content").innerHTML += `<article>
+                <h2>DEMO FOR SINGULAR PAGE</h2>
+                <h2>${data.title.rendered}</h2>
+            <section>${data.content.rendered}</section></article>
+            `;
+        });
+      // all the possible routes
       fetch("https://ngy.micromedia.vanier.college/headless1/wp-json/wp/v2/")
         .then((result) => result.json())
         .then((data) => console.log(data));
