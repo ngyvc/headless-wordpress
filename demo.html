@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Headless wordpress demo</title>
+    <style>
+      #headless-pages,
+      #headless-posts {
+        border-top: 5em solid black;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      img {
+        width: 100%;
+        height: auto;
+      }
+      .thumbs {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      .intro-img img {
+        height: 150px;
+        width: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="headless">
+      <section id="headless-pages"></section>
+      <section id="headless-posts"></section>
+    </main>
+    <script>
+      fetch(
+        "https://ngy.micromedia.vanier.college/headless1/wp-json/wp/v2/pages"
+      )
+        .then((result) => result.json())
+        .then((data) => {
+          for (let item of data) {
+            document.querySelector("#headless-pages").innerHTML += `<article>
+                <h2>${item.title.rendered}</h2>
+            <section>${item.content.rendered}</section></article>
+            `;
+          }
+        });
+      fetch(
+        "https://ngy.micromedia.vanier.college/headless1/wp-json/wp/v2/posts"
+      )
+        .then((result) => result.json())
+        .then((data) => {
+          for (let item of data) {
+            document.querySelector("#headless-posts").innerHTML += `<article>
+                <h2>${item.title.rendered}</h2>
+            <section>${item.content.rendered}</section></article>
+            `;
+          }
+        });
+      fetch("https://ngy.micromedia.vanier.college/headless1/wp-json/wp/v2/")
+        .then((result) => result.json())
+        .then((data) => console.log(data));
+    </script>
+  </body>
+</html>
